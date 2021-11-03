@@ -9,19 +9,23 @@ class Building{
     this.b = b;
     this.o = o;
   }
-  display(){
+  display(window){
     fill(this.r,this.g,this.b,this.o);
-    rect(this.x,this.y,this.w,this.h,5);
+    rect(this.x,this.y,this.w,this.h,2);
     push();
     translate(this.x,this.y);
     for(let i = 5;i<this.w-4;i++){
       if(i%10 == 0){
         for(let j = 5; j<(-this.h)-4; j++){
           if (j%15 == 0){
-            fill(255,255,0,150);
             noStroke();
+            if (window == 1){
+              fill(255,255,0,220);
+            } else {
+              fill(255, 254, 179,220);
+            }
             rectMode(CENTER);
-            rect(i,-j,5,5);
+            rect(i,-j,6,6);
           }
         }
       }
@@ -30,12 +34,23 @@ class Building{
   }
 }
 
-class Mountain{
-  constructor(x,y){
+class Person{
+  constructor(x,y,w,h){
     this.x = x;
     this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+  display(){
+    fill(0);
+    rectMode(CENTER);
+    rect(this.x,this.y,this.w,this.h,10);
+    ellipseMode(CENTER);
+    ellipse(this.x,this.y-(this.w*2-5),this.w/2,this.w/2);
+    rectMode(CORNER);
   }
 }
+
 
 class Road{
   constructor(x,y,h){
@@ -44,13 +59,13 @@ class Road{
     this.h = h;
   }
   display(){
-    fill(125);
+    fill(40);
     rect(this.x,this.y,width+50,this.h);
     push();
     translate(this.x,this.y);
     noStroke();
     for (let i = this.x; i<width+50; i+=70){
-      fill(240,255,255,190);
+      fill(220,220,220,190);
       rectMode(CENTER);
       rect(i,(this.h)/2,50,8,3);
     }
@@ -59,11 +74,16 @@ class Road{
 }
 
 class Water{
-  consturctor(){
-    
+  constructor(x,y,r,g,b){
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.g = g;
+    this.b = b;
   }
   display(){
-    
+    fill(this.r,this.g,this.b);
+    rect(this.x,this.y,width,height-this.y);
   }
 }
   
@@ -102,9 +122,71 @@ class Sky{
     rect(0,535,width,107);
     stroke(0);
   }
+  update(time){
+    if (time == "night"){
+      if(this.r1!=0){
+        this.r1 -= 1;
+      }
+      if(this.g1!=0){
+        this.g1 -= 1;
+      }
+      if(this.b1!=0){
+        this.b1 -= 1;
+      }
+      if(this.r2!=0){
+        this.r2 -= 1;
+      }
+      if(this.g2!=0){
+        this.g2 -= 1;
+      }
+      if(this.b2!=0){
+        this.b2 -= 1;
+      }
+    } else if (time == "day"){
+      if(this.r1!=212){
+        this.r1 += 1;
+      }
+      if(this.g1!=228){
+        this.g1 += 1;
+      }
+      if(this.b1!=255){
+        this.b1 += 1;
+      }
+      if(this.r2!=79){
+        this.r2 += 1;
+      }
+      if(this.g2!=144){
+        this.g2 += 1;
+      }
+      if(this.b2!=255){
+        this.b2 += 1;
+      }
+    }
+  }
 }
 
+class Fence{
+  constructor(x,y,r,g,b){
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.g = g;
+    this.b = b;
+  }
+  display(){
+    fill(this.r,this.g,this.b);
+    rect(this.x,this.y,width,height-this.y);
+    push();
+    translate(this.x,0); //only translated on the x axis because another let j for loop is not necessary and will mess up the fence for loop below
+    for (let i = 0; i<width+50; i+=100){
+      rect(i,this.y-25,100,10);
+      rect(i+90,this.y-25,10,25);
+    }
+    pop();
+  }
+}
 
+//values: Building(x,y,width,height,red,green,blue,opacity)
 building_1 = new Building(-10,600,87,-200,11, 29, 59,250);
 building_2 = new Building(80,600,87,-125,6, 18, 38,250);
 building_3 = new Building(170,600,145,-100,11, 28, 56,250);
@@ -115,9 +197,27 @@ building_7 = new Building(590,600,69,-100,11, 28, 56,250);
 building_8 = new Building(660,600,77,-165,14, 33, 64,250);
 building_9 = new Building(740,600,70,-130,11, 29, 59,250);
 
-road = new Road(-10,603,40);
+back_building_1 = new Building(40,580,70,-220,6, 18, 38,190);
+back_building_2 = new Building(120,580,120,-170,6, 18, 38,190);
+back_building_3 = new Building(250,580,100,-190,6, 18, 38,190);
+back_building_4 = new Building(350,580,95,-160,6, 18, 38,190);
+back_building_5 = new Building(455,580,80,-200,6, 18, 38,190);
+back_building_6 = new Building(540,580,100,-180,6, 18, 38,190);
+back_building_7 = new Building(680,580,90,-170,6, 18, 38,190);
+
+
+road = new Road(-10,601,40);
 
 sky = new Sky(145,80,63,250,240,57,9,250);
+
+water = new Water(0,645,39, 86, 168);
+
+fence = new Fence(0,770,20,50,50);
+
+main_person = new Person(400,750,15,40);
+
+
+
 
 function setup() {
   createCanvas(800,800);
@@ -125,17 +225,36 @@ function setup() {
 }
 
 function draw() {
+  water.display();
+  fence.display();
+  if (mouseIsPressed){
+    rectMode(CENTER);
+  }
+  let timecount = millis();
+  if(timecount>5000&&timecount<15000){
+    sky.update("night");
+  } else if(timecount>15000){
+    sky.update("day");
+  }
+  
   sky.display();
-  building_1.display();
-  building_2.display();
-  building_3.display();
-  building_4.display();
-  building_5.display();
-  building_6.display();
-  building_7.display();
-  building_8.display();
-  building_9.display();
+  back_building_1.display(2);
+  back_building_2.display(1);
+  back_building_3.display(2);
+  back_building_4.display(1);
+  back_building_5.display(2);
+  back_building_6.display(2);
+  back_building_7.display(1);
+  building_1.display(1);
+  building_2.display(2);
+  building_3.display(1);
+  building_4.display(1);
+  building_5.display(2);
+  building_6.display(1);
+  building_7.display(2);
+  building_8.display(2);
+  building_9.display(1);
   road.display();
   
->>>>>>> 8afb5d7e619d5a78f216ee1e5b65ce68bab2f38e
+  main_person.display();
 }
