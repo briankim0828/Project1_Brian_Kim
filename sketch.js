@@ -340,6 +340,7 @@ ped13 = new Person(-110,778,15,40);
 ped14 = new Person(-150,761,15,40);
 ped15 = new Person(900,758,15,40);
 ped16 = new Person(935,775,15,40);
+ped17 = new Person(1000,770,15,40);
 
 
 stars = new Stars(0);
@@ -450,6 +451,7 @@ function draw() {
   ped14.update(random(0.5,1.5));
   ped15.update(random(0.5,1.5));
   ped16.update(random(0.5,1.5));
+  ped17.update(random(0.5,1.5));
   ped1.display();
   ped2.display();
   ped3.display();
@@ -466,4 +468,5 @@ function draw() {
   ped14.display();
   ped15.display();
   ped16.display();
+  ped17.display();
 }
