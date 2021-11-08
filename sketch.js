@@ -8,6 +8,7 @@ class Building{
     this.g = g;
     this.b = b;
     this.o = o;
+    this.window_opacity = 0;
   }
   display(window){
     fill(this.r,this.g,this.b,this.o); //building color
@@ -18,11 +19,12 @@ class Building{
       if(i%10 == 0&&(i==10||i==30||i==40||i==60||i==80||i==90||i==100||i==120||i==130||i==140)){
         for(let j = 5; j<(-this.h)-4; j++){
           if (j%15 == 0){
-            noStroke();
+            strokeWeight(1);
+            stroke(255);
             if (window == 1){//two colors depending on the paramter of the display function
-              fill(255,255,0,220);
+              fill(255,255,0,this.window_opacity);
             } else {
-              fill(255, 254, 179,220);
+              fill(255, 254, 179,this.window_opacity);
             }
             rectMode(CENTER);
             rect(i,-j,6,6);
@@ -32,6 +34,19 @@ class Building{
     }
     pop();
   }
+  update(on){
+    if (on){
+      this.window_opacity++;
+      if (this.window_opacity>255){
+        this.window_opacity = 255;
+      }
+    } else {
+      this.window_opacity--;
+      if (this.window_opacity<0){
+        this.window_opacity = 0;
+      }
+    }
+  }
 }
 
 class Person{
@@ -40,6 +55,7 @@ class Person{
     this.y = y;
     this.w = w;
     this.h = h;
+    this.initial = x;
   }
   display(){
     fill(0);
@@ -48,6 +64,19 @@ class Person{
     ellipseMode(CENTER);
     ellipse(this.x,this.y-(this.w*2-5),this.w/2,this.w/2);
     rectMode(CORNER);
+  }
+  update(speed){
+    if (this.initial<400){
+      this.x+=speed;
+      if (this.x > 810){ 
+        this.x = -20;
+      }
+    } else if (this.initial>400){
+      this.x-=speed;
+      if (this.x < -10){
+        this.x = 820;
+      }
+    }
   }
 }
 
@@ -293,6 +322,26 @@ fence = new Fence(0,770,20,50,50);
 
 main_person = new Person(400,750,15,40);
 
+ped1 = new Person(-20,775,15,40);
+ped2 = new Person(50,760,15,40);
+ped3 = new Person(100,767,15,40);
+ped4 = new Person(180,770,15,40);
+ped5 = new Person(260,760,15,40);
+ped6 = new Person(380,764,15,40);
+
+ped7 = new Person(420,758,15,40);
+ped8 = new Person(500,780,15,40);
+ped9 = new Person(550,773,15,40);
+ped10 = new Person(610,762,15,40);
+ped11 = new Person(630,764,15,40);
+ped12 = new Person(850,783,15,40);
+
+ped13 = new Person(-110,778,15,40);
+ped14 = new Person(-150,761,15,40);
+ped15 = new Person(900,758,15,40);
+ped16 = new Person(935,775,15,40);
+
+
 stars = new Stars(0);
 
 let scenecount = 1;
@@ -314,12 +363,44 @@ function draw() {
   if(millis() - timecount > 5000){ //day & night cycle
     if (scenecount == 1){
       stars.update(true);
+      back_building_1.update(true);
+      back_building_2.update(true);
+      back_building_3.update(true);
+      back_building_4.update(true);
+      back_building_5.update(true);
+      back_building_6.update(true);
+      back_building_7.update(true);
+      building_1.update(true);
+      building_2.update(true);
+      building_3.update(true);
+      building_4.update(true);
+      building_5.update(true);
+      building_6.update(true);
+      building_7.update(true);
+      building_8.update(true);
+      building_9.update(true);
       if (sky.update("night")){
         scenecount++;
         timecount = millis();
       }
     } else if (scenecount ==2){
       stars.update(false);
+      back_building_1.update(false);
+      back_building_2.update(false);
+      back_building_3.update(false);
+      back_building_4.update(false);
+      back_building_5.update(false);
+      back_building_6.update(false);
+      back_building_7.update(false);
+      building_1.update(false);
+      building_2.update(false);
+      building_3.update(false);
+      building_4.update(false);
+      building_5.update(false);
+      building_6.update(false);
+      building_7.update(false);
+      building_8.update(false);
+      building_9.update(false);
       if (sky.update("day")){
         scenecount++;
         timecount = millis();
@@ -353,4 +434,36 @@ function draw() {
   road.display();
   
   main_person.display();
+  ped1.update(random(0.5,1.5));
+  ped2.update(random(0.5,1.5));
+  ped3.update(random(0.5,1.5));
+  ped4.update(random(0.5,1.5));
+  ped5.update(random(0.5,1.5));
+  ped6.update(random(0.5,1.5));
+  ped7.update(random(0.5,1.5));
+  ped8.update(random(0.5,1.5));
+  ped9.update(random(0.5,1.5));
+  ped10.update(random(0.5,1.5));
+  ped11.update(random(0.5,1.5));
+  ped12.update(random(0.5,1.5));
+  ped13.update(random(0.5,1.5));
+  ped14.update(random(0.5,1.5));
+  ped15.update(random(0.5,1.5));
+  ped16.update(random(0.5,1.5));
+  ped1.display();
+  ped2.display();
+  ped3.display();
+  ped4.display();
+  ped5.display();
+  ped6.display();
+  ped7.display();
+  ped8.display();
+  ped9.display();
+  ped10.display();
+  ped11.display();
+  ped12.display();
+  ped13.display();
+  ped14.display();
+  ped15.display();
+  ped16.display();
 }
