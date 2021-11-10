@@ -8,9 +8,10 @@ class Building{
     this.g = g;
     this.b = b;
     this.o = o;
-    this.window_opacity = 0;
+    this.window_opacity_yellow = 0;
+    this.window_opacity_blue = 255;
   }
-  display(window){
+  display(windowVariety){
     fill(this.r,this.g,this.b,this.o); //building color
     rect(this.x,this.y,this.w,this.h,2); //draw the body of the building
     push();
@@ -21,12 +22,14 @@ class Building{
           if (j%15 == 0){
             strokeWeight(1);
             stroke(255);
-            if (window == 1){//two colors depending on the paramter of the display function
-              fill(255,255,0,this.window_opacity);
+            if (windowVariety == 1){//two colors depending on the paramter of the display function
+              fill(255,255,0,this.window_opacity_yellow);
             } else {
-              fill(255, 254, 179,this.window_opacity);
+              fill(255, 254, 179,this.window_opacity_yellow);
             }
             rectMode(CENTER);
+            rect(i,-j,6,6);
+            fill (174, 221, 245,this.window_opacity_blue);
             rect(i,-j,6,6);
           }
         }
@@ -36,14 +39,22 @@ class Building{
   }
   update(on){
     if (on){
-      this.window_opacity++;
-      if (this.window_opacity>255){
-        this.window_opacity = 255;
+      this.window_opacity_yellow++;
+      this.window_opacity_blue-=2;
+      if (this.window_opacity_yellow>255){
+        this.window_opacity_yellow = 255;
+      }
+      if (this.window_opacity_blue<0){
+        this.window_opacity_blue = 0;
       }
     } else {
-      this.window_opacity--;
-      if (this.window_opacity<0){
-        this.window_opacity = 0;
+      this.window_opacity_yellow-=2;
+      this.window_opacity_blue++;
+      if (this.window_opacity_yellow<0){
+        this.window_opacity_yellow = 0;
+      }
+      if (this.window_opacity_blue>255){
+        this.window_opacity_blue = 255; 
       }
     }
   }
@@ -57,12 +68,17 @@ class Person{
     this.h = h;
     this.initial = x;
   }
-  display(){
-    fill(0);
+  display(main){
+    noStroke();
+    if (main){
+      fill(128, 29, 11);
+    } else {
+      fill(0);
+    }
     rectMode(CENTER);
     rect(this.x,this.y,this.w,this.h,10);
     ellipseMode(CENTER);
-    ellipse(this.x,this.y-(this.w*2-5),this.w/2,this.w/2);
+    ellipse(this.x,this.y-(this.w*2-5),this.w*0.6);
     rectMode(CORNER);
   }
   update(speed){
@@ -338,9 +354,10 @@ cloud1 = new Cloud(50,100,100,30,1.1);
 cloud2 = new Cloud(-50,40,140,34,1.3);
 cloud3 = new Cloud(-200,120,120,28,1.2)
 cloud4 = new Cloud(300,150,135,38,0.9);
-cloud5 = new Cloud(600,90,110,32,1);
-cloud6 = new Cloud(700,135,125,30,1.4);
-cloud7 = new Cloud(400,300,80,30,2);
+cloud5 = new Cloud(450,70,145,33,1)
+cloud6 = new Cloud(600,90,110,32,1.3);
+cloud7 = new Cloud(700,135,125,30,1.4);
+cloud8 = new Cloud(400,300,80,30,1.8);
 
 water = new Water(0,645,39, 86, 168);
 
@@ -374,6 +391,8 @@ stars = new Stars(0);
 let scenecount = 1;
 
 let timecount = 0;
+
+let timeOfday = "day";
 
 
 function setup() {
@@ -442,6 +461,7 @@ function draw() {
   
   sky.display();
   stars.display();
+  
   back_building_1.display(2);
   back_building_2.display(1);
   back_building_3.display(2);
@@ -474,9 +494,11 @@ function draw() {
   building_7.display(2);
   building_8.display(2);
   building_9.display(1);
+  
   road.display();
   
-  main_person.display();
+  main_person.display(true);
+  
   ped1.update(random(0.5,1.5));
   ped2.update(random(0.5,1.5));
   ped3.update(random(0.5,1.5));
