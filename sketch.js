@@ -263,10 +263,28 @@ class Stars{
 }
 
 class Cloud{
-  constructor(x,y,speed){
+  constructor(x,y,w,h,speed){
     this.x = x;
     this.y = y;
+    this.w = w;
+    this.h = h;
     this.speed = speed;
+  }
+  display(){
+    fill(255,255,255,100);
+    noStroke();
+    ellipseMode(CENTER);
+    ellipse(this.x,this.y,this.w,this.h);
+    ellipse(this.x+10,this.y+10,this.w,this.h);
+    ellipse(this.x-30,this.y+20,this.w,this.h);
+    ellipse(this.x-18,this.y+5,this.w,this.h);
+    stroke(0);
+  }
+  update(){
+    this.x+=this.speed;
+    if (this.x > 880){ 
+        this.x = -80;
+      }
   }
 }
 
@@ -315,6 +333,14 @@ back_building_7 = new Building(680,580,90,-170,6, 18, 38,190);
 road = new Road(-10,601,40);
 
 sky = new Sky(145,80,63,250,240,42,31,250);
+
+cloud1 = new Cloud(50,100,100,30,1.1);
+cloud2 = new Cloud(-50,40,140,34,1.3);
+cloud3 = new Cloud(-200,120,120,28,1.2)
+cloud4 = new Cloud(300,150,135,38,0.9);
+cloud5 = new Cloud(600,90,110,32,1);
+cloud6 = new Cloud(700,135,125,30,1.4);
+cloud7 = new Cloud(400,300,80,30,2);
 
 water = new Water(0,645,39, 86, 168);
 
@@ -423,6 +449,22 @@ function draw() {
   back_building_5.display(2);
   back_building_6.display(2);
   back_building_7.display(1);
+  
+  cloud1.update();
+  cloud2.update();
+  cloud3.update();
+  cloud4.update();
+  cloud5.update();
+  cloud6.update();
+  cloud7.update();
+  cloud1.display();
+  cloud2.display();
+  cloud3.display();
+  cloud4.display();
+  cloud5.display();
+  cloud6.display();
+  cloud7.display();
+  
   building_1.display(1);
   building_2.display(2);
   building_3.display(1);
