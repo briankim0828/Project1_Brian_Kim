@@ -96,6 +96,75 @@ class Person{
   }
 }
 
+class Car {
+  constructor(x,y,color,speed){
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.speed = speed;
+  }
+  display(on){
+    rectMode(CENTER);
+    fill(this.color);
+    rect(this.x,this.y,40,16,10);
+    ellipseMode(CENTER);
+    stroke(0);
+    fill(200);
+    ellipse(this.x-9,this.y+7,12);
+    ellipse(this.x+9,this.y+7,12);
+    if (this.y < 615){
+      fill(174, 221, 245,100);
+      beginShape();
+      vertex(this.x-12,this.y-8);
+      vertex(this.x-8,this.y-20);
+      vertex(this.x+5,this.y-20);
+      vertex(this.x+12,this.y-8);
+      endShape(CLOSE);
+    } else {
+      fill(174, 221, 245,100);
+      beginShape();
+      vertex(this.x-12,this.y-8);
+      vertex(this.x-5,this.y-20);
+      vertex(this.x+8,this.y-20);
+      vertex(this.x+12,this.y-8);
+      endShape(CLOSE);
+    }
+    if (on){
+      if (this.y < 615){
+        noStroke();
+        fill(255, 255, 79,100);
+        beginShape();
+        vertex(this.x+20,this.y-2);
+        vertex(this.x+50,this.y+16);
+        vertex(this.x+30,this.y+16);
+        vertex(this.x+20,this.y+2);
+        endShape(CLOSE);
+      } else {
+        noStroke();
+        fill(255, 255, 79,100);
+        beginShape();
+        vertex(this.x-20,this.y-2);
+        vertex(this.x-50,this.y+16);
+        vertex(this.x-30,this.y+16);
+        vertex(this.x-20,this.y+2);
+        endShape(CLOSE);
+      }
+    }
+  }
+  update(){
+    if (this.y < 615){
+      this.x+=this.speed;
+      if (this.x > 830){
+        this.x = -30;
+      }
+    } else {
+      this.x-=this.speed;
+      if (this.x < -30){
+        this.x = 830;
+      }
+    }
+  }
+}
 
 class Road{
   constructor(x,y,h){
@@ -348,6 +417,19 @@ back_building_7 = new Building(680,580,90,-170,6, 18, 38,190);
 
 road = new Road(-10,601,40);
 
+let carXpos = [30,350,600,700,500,150,100];
+let carYpos = [603,605,609,622,620,624,618];
+let carColor = [100,20,240,80,160,200,140]
+let carSpeed = [2,3,4]
+
+car1 = new Car(carXpos[0],carYpos[0],carColor[0],carSpeed[1]);
+car2 = new Car(carXpos[1],carYpos[1],carColor[1],carSpeed[0]);
+car3 = new Car(carXpos[2],carYpos[2],carColor[2],carSpeed[2]);
+car4 = new Car(carXpos[3],carYpos[3],carColor[3],carSpeed[1]);
+car5 = new Car(carXpos[4],carYpos[4],carColor[4],carSpeed[0]);
+car6 = new Car(carXpos[5],carYpos[5],carColor[5],carSpeed[2]);
+car7 = new Car(carXpos[6],carYpos[6],carColor[6],carSpeed[1]);
+
 sky = new Sky(145,80,63,250,240,42,31,250);
 
 cloud1 = new Cloud(50,100,100,30,1.1);
@@ -392,7 +474,7 @@ let scenecount = 1;
 
 let timecount = 0;
 
-let timeOfday = "day";
+let nightMode = false; 
 
 
 function setup() {
@@ -428,6 +510,7 @@ function draw() {
       if (sky.update("night")){
         scenecount++;
         timecount = millis();
+        nightMode = true;
       }
     } else if (scenecount ==2){
       stars.update(false);
@@ -450,6 +533,7 @@ function draw() {
       if (sky.update("day")){
         scenecount++;
         timecount = millis();
+        nightMode = false;
       }
     } else if (scenecount == 3){
       if (sky.update("sunset")){
@@ -496,6 +580,21 @@ function draw() {
   building_9.display(1);
   
   road.display();
+  
+  car1.update();
+  car2.update();
+  car3.update();
+  car4.update();
+  car5.update();
+  car6.update();
+  car7.update();
+  car1.display(nightMode);
+  car2.display(nightMode); 
+  car3.display(nightMode); 
+  car7.display(nightMode); 
+  car5.display(nightMode); 
+  car4.display(nightMode); 
+  car6.display(nightMode);
   
   main_person.display(true);
   
